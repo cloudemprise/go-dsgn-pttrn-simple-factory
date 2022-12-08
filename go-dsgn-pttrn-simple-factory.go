@@ -102,7 +102,7 @@ func createProduct(productType string) (iAbstractProduct, error) {
 	return nil, fmt.Errorf("Wrong product selection.")
 }
 
-// START : A Simple Factory Function
+// END : A Simple Factory Function
 // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
