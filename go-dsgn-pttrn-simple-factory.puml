@@ -1,0 +1,65 @@
+@startuml go-dsgn-pttrn-simple-factory
+
+namespace simple-factory {
+
+    object ProductA {
+/'         - behaviour string
+        - feature int '/
+    }
+
+   class customProductA << (S,Aquamarine) >> {
+        + concreteProduct
+    }
+
+    class concreteProduct << (S,Aquamarine) >> {
+        - behaviour string
+        - feature int
+
+        + setBehaviour(behaviour string) 
+        + getBehaviour() string
+        + setFeature(feature int) 
+        + getFeature() int
+
+    }
+
+    class customProductB << (S,Aquamarine) >> {
+        + concreteProduct
+    }
+
+    object ProductB {
+/'         - behaviour string
+        - feature int '/
+    }
+
+    class client {
+        + createProduct(productType) iAbstractProduct
+    }
+
+    interface iAbstractProduct  {
+
+        + setBehaviour(behaviour string) 
+        + getBehaviour() string
+        + setFeature(feature int) 
+        + getFeature() int
+
+    }
+}
+
+"simple-factory.client" --> "simple-factory.iAbstractProduct"
+
+"simple-factory.iAbstractProduct" <|.. "simple-factory.concreteProduct"
+
+"simple-factory.concreteProduct" *- "simple-factory.customProductB"
+"simple-factory.customProductA" *- "simple-factory.concreteProduct"
+
+
+"simple-factory.client" ..> "ProductA"
+ProductA <.. "simple-factory.customProductA"
+"simple-factory.client" ..> "ProductB"
+ProductB <.. "simple-factory.customProductB"
+
+note "abstract product definition" as N2
+"simple-factory.customProductA" <.[dotted]. N2
+N2 .[dotted].> "simple-factory.customProductB"
+
+@enduml
