@@ -4,7 +4,7 @@
 
 Because Go does not support traditional OOP components, such as classes and inheritance, it is not possible to implement the classic Factory Method. Nevertheless, it is still possible to implement a basic Simple Factory pattern within Go.
 
-The Simple Factory Pattern is a creational design pattern that creates objects by calling a free-standing factory function that constructs a particular variant of the specified type. As such, concrete object creation is implemented by derived types rather than by calling a constructor of the primal type itself, thus providing a mechanism to mutate or extend variations of the interested type.
+The Simple Factory Pattern is a creational design pattern that creates wholesale objects by outsourcing object creation to a Factory Function. And so, rather than instandiating a composite literal (curly-braces notation), you make a call to a Factory Function that returns an instance of an object that you want to create, thus providing a mechanism to mutate or extend variations of a particular construct.
 
 &nbsp;
 
