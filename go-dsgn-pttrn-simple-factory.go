@@ -9,7 +9,7 @@ import (
 // v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v
 // START : Abstract Product Definition (Interface)
 
-// require product behaviours
+// product behaviours
 type iAbstractProduct interface {
 	setBehaviour(behaviour string)
 	getBehaviour() string
@@ -22,110 +22,91 @@ type iAbstractProduct interface {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v
-// START : Concrete Product Definition
+// START : Concrete Product A Definition
 
 // the concrete product type
-type concreteProduct struct {
-	behaviour string
-	feature   int
+type concreteProductA struct {
+	behaviourA string
+	featureA   int
 }
 
 // the concrete product implementation:
 // ---------------------------------
 
-func (item *concreteProduct) setBehaviour(behaviour string) {
-	item.behaviour = behaviour
+func (item *concreteProductA) setBehaviour(behaviour string) {
+	item.behaviourA = behaviour
 }
 
-func (item *concreteProduct) getBehaviour() string {
-	return item.behaviour
+func (item *concreteProductA) getBehaviour() string {
+	return item.behaviourA
 }
 
-func (item *concreteProduct) setFeature(feature int) {
-	item.feature = feature
+func (item *concreteProductA) setFeature(feature int) {
+	item.featureA = feature
 }
 
-func (item *concreteProduct) getFeature() int {
-	return item.feature
+func (item *concreteProductA) getFeature() int {
+	return item.featureA
 }
 
-// END : Concrete Product Definition
+// END : Concrete Product A Definition
 // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v
-// START : Custom Concrete Product Factory Functions
+// START : Concrete Product A Definition
 
-// (abstract) custom product definition
-type customProductA struct {
-	concreteProduct
+// the concrete product type
+type concreteProductB struct {
+	behaviourB string
+	featureB   int
 }
 
-// factory function : one way of doing it
-func newCustomProductA() iAbstractProduct {
-	return &customProductA{
-		concreteProduct{
-			behaviour: "Special default",
-			feature:   0,
-		},
-	}
+// the concrete product implementation:
+// ---------------------------------
+
+func (item *concreteProductB) setBehaviour(behaviour string) {
+	item.behaviourB = behaviour
 }
 
-// ---
-
-// (abstract) custom product definition
-type customProductB struct {
-	concreteProduct
+func (item *concreteProductB) getBehaviour() string {
+	return item.behaviourB
 }
 
-// factory function : a different way of doing it
-func newCustomProductB() iAbstractProduct {
-	// var item = &customProductB{}
-	var item = new(customProductB)
-	item.behaviour = "Different default value"
-	item.feature = 0
-	return item
+func (item *concreteProductB) setFeature(feature int) {
+	item.featureB = feature
 }
 
-/* A 3rd way of doing it
-// free-standing factory function where variation is declared
-func newCustomProductB() iAbstractProduct {
-	var item = new(concreteProduct)
-	// mutate the basal type
-	item.setBehaviour("Custom Product B")
-	item.setFeature(2)
-	return item
-} */
+func (item *concreteProductB) getFeature() int {
+	return item.featureB
+}
 
-// END : Custom Concrete Product Factory Functions
+// END : Concrete Product A Definition
 // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v v
-// START : Product Selector
+// START : Simple Factory Function
 
 // a product selector with some mutation
-func createProduct(productType string) iAbstractProduct {
+func createProduct(productType string, behaviour string, feature int) iAbstractProduct {
 	switch productType {
-	case "customProductA":
-		product := newCustomProductA()
-		// mutate the default values
-		product.setBehaviour("Custom Product A")
-		product.setFeature(123)
-		return product
-	case "customProductB":
-		product := newCustomProductB()
-		// mutate the default values
-		product.setBehaviour("Custom Product B")
-		product.setFeature(456)
-		return product
+	case "concreteProductA":
+		return &concreteProductA{
+			behaviourA: behaviour,
+			featureA:   feature,
+		}
+	case "concreteProductB":
+		return &concreteProductB{
+			behaviourB: behaviour,
+			featureB:   feature,
+		}
 	default:
 		return nil
 	}
-
 }
 
-// END : Product Selector
+// END : Simple Factory Function
 // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -134,10 +115,14 @@ func createProduct(productType string) iAbstractProduct {
 
 func main() {
 
-	myProductA := createProduct("customProductA")
+	myProductA := createProduct("concreteProductA", "myProductA", 123)
 	printDetails(myProductA)
 
-	myProductB := createProduct("customProductB")
+	myProductB := createProduct("concreteProductB", "myProductB", 456)
+	printDetails(myProductB)
+
+	// can't access attributes directly but can use
+	// methods to modify after object creation:
 	myProductB.setBehaviour("Need unique change here.")
 	myProductB.setFeature(69)
 	printDetails(myProductB)
@@ -147,6 +132,7 @@ func main() {
 func printDetails(product iAbstractProduct) {
 	fmt.Printf("Behaviour: %s\n", product.getBehaviour())
 	fmt.Printf("Feature  : %d\n", product.getFeature())
+	fmt.Printf("\n")
 }
 
 // END : Client Code

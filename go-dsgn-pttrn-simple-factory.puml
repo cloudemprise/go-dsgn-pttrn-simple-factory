@@ -2,18 +2,17 @@
 
 namespace simple-factory {
 
+    class client {
+        + createProduct(...) iAbstractProduct
+    }
+
     object ProductA {
-/'         - behaviour string
-        - feature int '/
+
     }
 
-   class customProductA << (S,Aquamarine) >> {
-        + concreteProduct
-    }
-
-    class concreteProduct << (S,Aquamarine) >> {
-        - behaviour string
-        - feature int
+    class concreteProductA << (S,Aquamarine) >> {
+        - behaviourA string
+        - featureA int
 
         + setBehaviour(behaviour string) 
         + getBehaviour() string
@@ -21,45 +20,41 @@ namespace simple-factory {
         + getFeature() int
 
     }
+    class concreteProductB << (S,Aquamarine) >> {
+        - behaviourB string
+        - featureB int
 
-    class customProductB << (S,Aquamarine) >> {
-        + concreteProduct
+        + setBehaviour(behaviour string) 
+        + getBehaviour() string
+        + setFeature(feature int) 
+        + getFeature() int
+
     }
 
     object ProductB {
-/'         - behaviour string
-        - feature int '/
-    }
 
-    class client {
-        + createProduct(productType) iAbstractProduct
     }
 
     interface iAbstractProduct  {
-
         + setBehaviour(behaviour string) 
         + getBehaviour() string
         + setFeature(feature int) 
         + getFeature() int
 
     }
+
+
+
 }
 
 "simple-factory.client" --> "simple-factory.iAbstractProduct"
 
-"simple-factory.iAbstractProduct" <|.. "simple-factory.concreteProduct"
-
-"simple-factory.concreteProduct" *- "simple-factory.customProductB"
-"simple-factory.customProductA" *- "simple-factory.concreteProduct"
-
-
 "simple-factory.client" ..> "ProductA"
-ProductA <.. "simple-factory.customProductA"
+ProductA <.. "simple-factory.concreteProductA"
 "simple-factory.client" ..> "ProductB"
-ProductB <.. "simple-factory.customProductB"
+ProductB <.. "simple-factory.concreteProductB"
 
-note "abstract product definition" as N2
-"simple-factory.customProductA" <.[dotted]. N2
-N2 .[dotted].> "simple-factory.customProductB"
+"simple-factory.iAbstractProduct" <|.. "simple-factory.concreteProductA"
+"simple-factory.iAbstractProduct" <|.. "simple-factory.concreteProductB"
 
 @enduml
